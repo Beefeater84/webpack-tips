@@ -1,0 +1,25 @@
+{
+  "name": "webpack-rewise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --mode development",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "*",
+    "css-loader": "^5.2.4",
+    "html-webpack-plugin": "^5.3.1",
+    "install": "^0.13.0",
+    "npm": "^7.10.0",
+    "style-loader": "^2.0.0"
+  }
+}
