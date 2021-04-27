@@ -30,12 +30,36 @@ module.exports = {
     new CleanWebpackPlugin()
   ],
   module: {
-    rules: [{
-      test: /\.css$/,
-      // Сначала выполняется правый, потом левый
-      // css-loader - обработка css
-      // style-loader - загрузка стилей в head html, и его import в index.html
-      use: ['style-loader', 'css-loader']
-    }]
+    // В массиве rules мы вносим loaders, которые помогают импортировать и обрабатывать что угодно
+    rules: [
+      {
+        // test - регулярное выражение, к каким файлам применяем данные loader
+        test: /\.css$/,
+        // Сначала выполняется правый, потом левый
+        // css-loader - обработка css
+        // style-loader - загрузка стилей в head html, и его import в index.html
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        // npm install file-loader --save-dev
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: ['file-loader']
+      },
+      {
+        // для удобства отдельно прописываем шрифты
+        test: /\.(ttf|wott|wott2|eot)$/i,
+        use: ['file-loader']
+      },
+      {
+        // csv loader, для работы необходимо установить papaparse
+        test: /\.(csv)$/i,
+        use: ['csv-loader']
+      },
+      {
+        // xml loader
+        test: /\.(xml)$/i,
+        use: ['xml-loader']
+      }
+    ]
   }
 }
