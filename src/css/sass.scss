@@ -1,0 +1,14 @@
+$border: 1px solid grey;
+
+.box{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  border: $border;
+  padding: 2rem;
+
+  h2{
+    margin: 0;
+  }
+}

@@ -1,0 +1,30 @@
+/* import обрабатывает webpack */
+@import url('./fonts.css');
+/* webpack подключение библиотек из node modules*/
+@import "~normalize.css";
+@import "~materialize-css";
+
+.container{
+    font-family: Roboto, Arial, sans-serif;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.logo{
+    margin: 0 auto;
+    width: 200px;
+    height: 220px;
+    background-image: url("../assets/webpack-logo.png");
+    background-size: cover;
+}
+
+.dropdown-trigger{
+    margin-top: 1rem;
+}
+
+a[type='button']{
+  cursor: pointer;
+
+}
