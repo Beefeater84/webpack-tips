@@ -2,6 +2,9 @@
 // Подключается в webpack.config как доп.точка входа
 // а как точка выхода используем паттерны в output [name].bundle.js
 
+// Для примера устанавливаем нашу библиотеку сюда, чтобы попробовать оптимизацию и не подгружать ее дважды
+import 'materialize-css'
+
 function clicker(){
   let counter = 0;
   let isDestroyed = false;

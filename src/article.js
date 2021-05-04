@@ -1,5 +1,6 @@
 export default class Article {
-  constructor(title) {
+  constructor(title, logo) {
+    this.logo = logo
     this.title = title;
     this.date = Date.now();
   }
@@ -7,6 +8,7 @@ export default class Article {
   meta() {
     return JSON.stringify({
       title: this.title,
+      logo: this.logo,
       date: this.date
     })
   }
