@@ -18,6 +18,11 @@ import 'materialize-css'
 import './js/babel'
 import './js/typescript.ts'
 
+// динамический импорт библиотек. Таким образом библиотека будет подгружена только в момент появления
+import('lodash').then(() => {
+  console.log('Lodash: ', _.random(0, 42, true))
+})
+
 
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.dropdown-trigger');
