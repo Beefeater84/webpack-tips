@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // NODE_ENV устанавливается на Mac OC с помощью export NODE_ENV = development
 // NODE_ENV устанавливается на Windows с помощью set NODE_ENV = development
@@ -79,6 +80,50 @@ const eslintLoader = loader => {
   return result
 }
 
+// Создаем отдельно функция со всеми плагинами, потому что в ней удобно добавлять какие-то плагины для разработки или для продакшена
+const plugins = () => {
+  const result =  [
+    new HtmlWebpackPlugin({
+      template: "./index.html",
+      minify: {
+        // Минификация html, конкретно этого template
+        collapseWhitespace: isProd
+      }
+    }),
+    // Выделяет css в отдельный файл, без него css инлайнится в js
+    // Для работы требует еще записи в rules
+    new MiniCssExtractPlugin({
+      filename:  filename('css'), //  "[name].[contenthash].bundle.css"
+    }),
+    // Нужен для переноса файлов из src в дист.
+    // Можно задавать паттерны и копировать все изображения
+    new CopyPlugin({
+      patterns: [
+        {from: path.resolve(__dirname, 'src/assets/webpack-icon.svg'), to: path.resolve(__dirname, 'dist/img')},
+        // { from: "source", to: "dest" },
+        // { from: "other", to: "public" },
+      ],
+    }),
+    // Ставится в конце и очищает все старые файлы в dist
+    new CleanWebpackPlugin()
+  ]
+
+  if( isDev ){
+    // Добавляем eslint: https://webpack.js.org/plugins/eslint-webpack-plugin/#root
+    // Он также требует плагина и конфигурируется в файле .eslintrc
+    result.push(new ESLintPlugin())
+  }
+
+  if ( isProd ){
+    // анализатор финальной сборки. Запускается в новом окне и показывает размер использованных библиотек
+    // Также, для него отдельно создан запуск npm run stats
+    // https://github.com/webpack-contrib/webpack-bundle-analyzer
+    result.push(new BundleAnalyzerPlugin())
+  }
+
+  return result;
+}
+
 
 module.exports = {
   // context - от какой папки отталкиваемся
@@ -122,34 +167,7 @@ module.exports = {
       '@assets': path.resolve(__dirname, 'src/assets')
     }
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./index.html",
-      minify: {
-        // Минификация html, конкретно этого template
-        collapseWhitespace: isProd
-      }
-    }),
-    // Добавляем eslint: https://webpack.js.org/plugins/eslint-webpack-plugin/#root
-    // Он также требует плагина и конфигурируется в файле .eslintrc
-    new ESLintPlugin(),
-    // Выделяет css в отдельный файл, без него css инлайнится в js
-    // Для работы требует еще записи в rules
-    new MiniCssExtractPlugin({
-      filename:  filename('css'), //  "[name].[contenthash].bundle.css"
-    }),
-    // Нужен для переноса файлов из src в дист.
-    // Можно задавать паттерны и копировать все изображения
-    new CopyPlugin({
-      patterns: [
-        {from: path.resolve(__dirname, 'src/assets/webpack-icon.svg'), to: path.resolve(__dirname, 'dist/img')},
-        // { from: "source", to: "dest" },
-        // { from: "other", to: "public" },
-      ],
-    }),
-    // Ставится в конце и очищает все старые файлы в dist
-    new CleanWebpackPlugin()
-  ],
+  plugins: plugins(),
   module: {
     // В массиве rules мы вносим loaders, которые помогают импортировать и обрабатывать что угодно
     rules: [
