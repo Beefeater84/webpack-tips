@@ -8,6 +8,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 // NODE_ENV устанавливается на Mac OC с помощью export NODE_ENV = development
 // NODE_ENV устанавливается на Windows с помощью set NODE_ENV = development
@@ -64,8 +65,18 @@ const babelOptions = preset => {
   if(!!preset){
     obj.options.presets.push(preset)
   }
-
   return obj;
+}
+
+const eslintLoader = loader => {
+  const babelLoaders = babelOptions('@babel/preset-env');
+
+  const result = [
+    loader,
+    babelLoaders
+  ]
+
+  return result
 }
 
 
@@ -119,6 +130,9 @@ module.exports = {
         collapseWhitespace: isProd
       }
     }),
+    // Добавляем eslint: https://webpack.js.org/plugins/eslint-webpack-plugin/#root
+    // Он также требует плагина и конфигурируется в файле .eslintrc
+    new ESLintPlugin(),
     // Выделяет css в отдельный файл, без него css инлайнится в js
     // Для работы требует еще записи в rules
     new MiniCssExtractPlugin({
