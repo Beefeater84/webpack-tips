@@ -201,5 +201,8 @@ module.exports = {
         use: ['xml-loader']
       }
     ]
-  }
+  },
+  // Конфигурация source map
+  // https://webpack.js.org/configuration/devtool/
+  devtool: isDev ? 'source-map' : ''
 }
