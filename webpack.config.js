@@ -218,5 +218,5 @@ module.exports = {
   },
   // Конфигурация source map
   // https://webpack.js.org/configuration/devtool/
-  devtool: isDev ? 'source-map' : ''
+  devtool: isDev ? 'source-map' : false
 }
