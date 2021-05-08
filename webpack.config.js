@@ -69,17 +69,6 @@ const babelOptions = preset => {
   return obj;
 }
 
-const eslintLoader = loader => {
-  const babelLoaders = babelOptions('@babel/preset-env');
-
-  const result = [
-    loader,
-    babelLoaders
-  ]
-
-  return result
-}
-
 // Создаем отдельно функция со всеми плагинами, потому что в ней удобно добавлять какие-то плагины для разработки или для продакшена
 const plugins = () => {
   const result =  [
@@ -129,6 +118,9 @@ module.exports = {
   // context - от какой папки отталкиваемся
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
+  // Конфигурация source map
+  // https://webpack.js.org/configuration/devtool/
+  devtool: isDev ? 'source-map' : false,
   entry: {
     // Разные точки входа.
     // На каждую точку входа генерируется свой выходящий файл
@@ -233,8 +225,5 @@ module.exports = {
         use: ['xml-loader']
       }
     ]
-  },
-  // Конфигурация source map
-  // https://webpack.js.org/configuration/devtool/
-  devtool: isDev ? 'source-map' : false
+  }
 }
